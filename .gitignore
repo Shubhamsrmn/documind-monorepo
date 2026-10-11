@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.next/
+.turbo/
+coverage/
+
+# Logs
+*.log
+
+# OS and editor
+.DS_Store
+Thumbs.db
