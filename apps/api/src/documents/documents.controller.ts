@@ -7,6 +7,9 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import {
+  type ConfirmUploadRequest,
+  ConfirmUploadResponse,
+  confirmUploadSchema,
   createUploadUrlSchema,
   type CreateUploadUrlRequest,
   type UploadUrlResponse,
@@ -25,5 +28,14 @@ export class DocumentsController {
     @Body() dto: CreateUploadUrlRequest,
   ): Promise<UploadUrlResponse> {
     return this.documentsService.createUploadUrl(dto);
+  }
+
+  @Post('confirm')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @UsePipes(new ZodValidationPipe(confirmUploadSchema))
+  async confirmUpload(
+    @Body() dto: ConfirmUploadRequest,
+  ): Promise<ConfirmUploadResponse> {
+    return this.documentsService.confirmUpload(dto);
   }
 }

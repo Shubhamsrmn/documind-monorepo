@@ -53,3 +53,29 @@ export const documentStatusSchema = z.enum([
 ]);
 
 export type DocumentStatus = z.infer<typeof documentStatusSchema>;
+
+export const confirmUploadSchema = z.object({
+  objectKey: z.string().min(1),
+  fileName: z.string().trim().min(1, "File name is required"),
+  mimeType: z.enum(ALLOWED_MIME_TYPES, {
+    message: `Invalid file type. Allowed types: ${ALLOWED_MIME_TYPES.join(", ")}`,
+  }),
+  fileSizeBytes: z
+    .number()
+    .int()
+    .positive("File size must be greater than 0")
+    .max(
+      MAX_FILE_SIZE_BYTES,
+      `File size exceeds maximum limit of ${MAX_FILE_SIZE_BYTES / (1024 * 1024)} MB`,
+    ),
+});
+
+export type ConfirmUploadRequest = z.infer<typeof confirmUploadSchema>;
+
+export const confirmUploadResponseSchema = z.object({
+  jobId: z.string().uuid(),
+  status: documentStatusSchema.default("PENDING"),
+  message: z.string().min(1),
+});
+
+export type ConfirmUploadResponse = z.infer<typeof confirmUploadResponseSchema>;
